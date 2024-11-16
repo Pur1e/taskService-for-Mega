@@ -3,8 +3,7 @@ package kg.com.restapifortaskmanagement.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +11,9 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "TASKS")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Task {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +25,9 @@ public class Task {
 	@Column(name = "TITLE", nullable = false, length = 50)
 	private String title;
 	
+	@Lob
 	@Column(name = "DESCRIPTION", columnDefinition = "CHARACTER LARGE OBJECT not null")
-	private Object description;
+	private String description;
 	
 	@NotNull
 	@Column(name = "STATUS", nullable = false)
