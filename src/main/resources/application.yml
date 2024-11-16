@@ -25,3 +25,8 @@ spring:
         generate_statistics: true
         format_sql: true
     show-sql: true
+
+  data:
+    redis:
+      port: 6379
+      host: localhost

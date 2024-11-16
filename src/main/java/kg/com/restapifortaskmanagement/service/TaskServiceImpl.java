@@ -7,6 +7,8 @@ import kg.com.restapifortaskmanagement.model.Task;
 import kg.com.restapifortaskmanagement.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +23,13 @@ public class TaskServiceImpl implements TaskService {
 	private final TaskMapper taskMapper;
 	
 	@Override
+	@Cacheable(value = "tasks", key = "'all_tasks'")
 	public List<TaskDto> getAllTasks() {
-		return List.of();
+		log.info("Fetching all tasks from database");
+		List<Task> tasks = repository.findAll();
+		return tasks.stream()
+				.map(taskMapper :: fromEntityToDto)
+				.toList();
 	}
 	
 	@Override
@@ -34,6 +41,8 @@ public class TaskServiceImpl implements TaskService {
 	
 	@Override
 	@Transactional
+	@CacheEvict(value = "tasks", key = "'all_tasks'")
+	
 	public Long createTask(TaskRequest task) {
 		Task t = taskMapper.fromRequestToEntity(task);
 		Long taskId = repository.save(t).getId();
@@ -43,6 +52,7 @@ public class TaskServiceImpl implements TaskService {
 	
 	@Override
 	@Transactional
+	@CacheEvict(value = "tasks", key = "'all_tasks'")
 	public TaskDto updateTask(Long id, TaskRequest updatedTask) {
 		log.info("Updating task with ID: {}", id);
 		Task task = findTaskById(id);
@@ -62,6 +72,7 @@ public class TaskServiceImpl implements TaskService {
 	
 	@Override
 	@Transactional
+	@CacheEvict(value = "tasks", key = "'all_tasks'")
 	public void deleteTask(Long id) {
 		repository.deleteById(id);
 		log.info("Задача с ID {} удалена", id);
