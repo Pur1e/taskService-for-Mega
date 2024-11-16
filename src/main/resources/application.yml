@@ -1,0 +1,27 @@
+server:
+  port: 4343
+spring:
+  application:
+    name: rest-api-for-task-management
+
+  datasource:
+    url: jdbc:h2:./db/taskService;AUTO_SERVER=true
+    username: root
+    password: qwerty
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: false
+
+  liquibase:
+    change-log: classpath:/db/changelog/master.yml
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        generate_statistics: true
+        format_sql: true
+    show-sql: true
