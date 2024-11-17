@@ -1,4 +1,4 @@
-package kg.com.restapifortaskmanagement.service;
+package kg.com.restapifortaskmanagement.service.mappers;
 
 import kg.com.restapifortaskmanagement.dto.TaskDto;
 import kg.com.restapifortaskmanagement.dto.TaskRequest;

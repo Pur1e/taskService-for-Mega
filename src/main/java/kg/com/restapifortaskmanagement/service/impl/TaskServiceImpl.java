@@ -6,7 +6,7 @@ import kg.com.restapifortaskmanagement.dto.TaskRequest;
 import kg.com.restapifortaskmanagement.model.Task;
 import kg.com.restapifortaskmanagement.repository.TaskRepository;
 import kg.com.restapifortaskmanagement.service.EmailService;
-import kg.com.restapifortaskmanagement.service.TaskMapper;
+import kg.com.restapifortaskmanagement.service.mappers.TaskMapper;
 import kg.com.restapifortaskmanagement.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
