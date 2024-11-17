@@ -30,3 +30,21 @@ spring:
     redis:
       port: 6379
       host: localhost
+
+  mail:
+    host: smtp.gmail.com
+    username: basit.03.kg@gmail.com
+    password: lppl cibr qxsm dmgd
+    port: 587
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+logging:
+  level:
+    org.hibernate: WARN
+    root: info

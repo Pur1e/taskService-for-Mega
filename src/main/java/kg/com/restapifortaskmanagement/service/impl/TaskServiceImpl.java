@@ -1,10 +1,13 @@
-package kg.com.restapifortaskmanagement.service;
+package kg.com.restapifortaskmanagement.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import kg.com.restapifortaskmanagement.dto.TaskDto;
 import kg.com.restapifortaskmanagement.dto.TaskRequest;
 import kg.com.restapifortaskmanagement.model.Task;
 import kg.com.restapifortaskmanagement.repository.TaskRepository;
+import kg.com.restapifortaskmanagement.service.EmailService;
+import kg.com.restapifortaskmanagement.service.TaskMapper;
+import kg.com.restapifortaskmanagement.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -21,6 +24,7 @@ public class TaskServiceImpl implements TaskService {
 	
 	private final TaskRepository repository;
 	private final TaskMapper taskMapper;
+	private final EmailService emailService;
 	
 	@Override
 	@Cacheable(value = "tasks", key = "'all_tasks'")
@@ -42,11 +46,16 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	@Transactional
 	@CacheEvict(value = "tasks", key = "'all_tasks'")
-	
 	public Long createTask(TaskRequest task) {
 		Task t = taskMapper.fromRequestToEntity(task);
 		Long taskId = repository.save(t).getId();
 		log.info("Task created with ID: {}", taskId);
+		
+		String taskDetails = String.format("ID: %d\nTitle: %s\nDescription: %s",
+				taskId, task.title(), task.description());
+		emailService.sendTaskCreatedEmail(task.email(), taskDetails);
+		log.info("Email with sent to {}", task.email());
+		
 		return taskId;
 	}
 	
