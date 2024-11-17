@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api.restful-api.dev/objects")
+@RequestMapping("/api/v1/tasks")
 @RequiredArgsConstructor
 @Slf4j
 public class TaskController {
@@ -30,7 +30,9 @@ public class TaskController {
 	public ResponseEntity<List<TaskDto>> getAllTasks() {
 		List<TaskDto> tasks = service.getAllTasks();
 		log.info("Fetched {} tasks", tasks.size());
-		return ResponseEntity.ok(tasks);
+		
+		if (tasks.isEmpty()) return ResponseEntity.noContent().build();
+		else return ResponseEntity.ok(tasks);
 	}
 	
 	@GetMapping("/{id}")
