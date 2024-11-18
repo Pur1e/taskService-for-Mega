@@ -29,8 +29,7 @@ spring:
   data:
     redis:
       port: 6379
-      host: redis
-      password: Qwerty
+      host: localhost
 
   mail:
     host: smtp.gmail.com
